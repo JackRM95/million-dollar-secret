@@ -24,6 +24,7 @@ jobs:
           cd $PROJECT_DIR
           npm install
           npm run build
+          cp dist/index.html dist/404.html
         env:
           VITE_ENV: production
           VITE_FIREBASE_API_KEY:             ${{ secrets.FIREBASE_API_KEY }}
@@ -38,4 +39,5 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ${{ env.PROJECT_DIR }}/dist
+          keep_files: true
           commit_message: "Deploy live build"
