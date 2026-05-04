@@ -40,4 +40,5 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ${{ env.PROJECT_DIR }}/dist
           destination_dir: staging
+          keep_files: true
           commit_message: "Deploy staging build"
