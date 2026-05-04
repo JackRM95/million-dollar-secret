@@ -24,6 +24,7 @@ jobs:
           cd $PROJECT_DIR
           npm install
           npm run build
+          cp dist/index.html dist/404.html
         env:
           VITE_ENV: staging
           VITE_FIREBASE_API_KEY:             ${{ secrets.FIREBASE_API_KEY }}
