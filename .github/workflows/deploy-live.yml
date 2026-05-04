@@ -1,14 +1,12 @@
-name: Deploy Staging
+name: Deploy Live
 
 on:
   push:
-    branches: [staging]
+    branches: [main]
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    env:
-      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
     steps:
       - uses: actions/checkout@v4
 
@@ -16,12 +14,20 @@ jobs:
         with:
           node-version: 24
 
-      - run: npm install
+      - name: Install dependencies
+        run: npm install
 
-      - name: Build (staging)
+      - name: Check env vars are present
+        run: |
+          echo "FIREBASE_PROJECT_ID is set: ${{ secrets.FIREBASE_PROJECT_ID != '' }}"
+          echo "Node version: $(node --version)"
+          echo "NPM version: $(npm --version)"
+          ls -la
+
+      - name: Build (production)
         run: npm run build
         env:
-          VITE_ENV: staging
+          VITE_ENV: production
           VITE_FIREBASE_API_KEY:             ${{ secrets.FIREBASE_API_KEY }}
           VITE_FIREBASE_AUTH_DOMAIN:         ${{ secrets.FIREBASE_AUTH_DOMAIN }}
           VITE_FIREBASE_PROJECT_ID:          ${{ secrets.FIREBASE_PROJECT_ID }}
@@ -29,10 +35,9 @@ jobs:
           VITE_FIREBASE_MESSAGING_SENDER_ID: ${{ secrets.FIREBASE_MESSAGING_SENDER_ID }}
           VITE_FIREBASE_APP_ID:              ${{ secrets.FIREBASE_APP_ID }}
 
-      - name: Deploy to GitHub Pages (staging)
+      - name: Deploy to GitHub Pages (live)
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./dist
-          destination_dir: staging
-          commit_message: "Deploy staging build"
+          commit_message: "Deploy live build"
