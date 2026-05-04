@@ -14,18 +14,14 @@ jobs:
         with:
           node-version: 24
 
-      - name: Install dependencies
-        run: npm install
-
-      - name: Check env vars are present
+      - name: Find project root and build
         run: |
-          echo "FIREBASE_PROJECT_ID is set: ${{ secrets.FIREBASE_PROJECT_ID != '' }}"
-          echo "Node version: $(node --version)"
-          echo "NPM version: $(npm --version)"
-          ls -la
-
-      - name: Build (production)
-        run: npm run build
+          PROJECT_DIR=$(find . -name "package.json" -not -path "./.git/*" -not -path "*/node_modules/*" | head -1 | xargs dirname)
+          echo "Found project at: $PROJECT_DIR"
+          echo "PROJECT_DIR=$PROJECT_DIR" >> $GITHUB_ENV
+          cd $PROJECT_DIR
+          npm install
+          npm run build
         env:
           VITE_ENV: production
           VITE_FIREBASE_API_KEY:             ${{ secrets.FIREBASE_API_KEY }}
@@ -39,5 +35,5 @@ jobs:
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist
+          publish_dir: ${{ env.PROJECT_DIR }}/dist
           commit_message: "Deploy live build"
