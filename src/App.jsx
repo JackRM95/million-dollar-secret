@@ -8,7 +8,7 @@ const DIFF_SCORE   = { Easy: 1, Medium: 2, Hard: 3, Impossible: 5 };
 const BO_PASSWORD  = "jack";
 const BAD_VOTE_THRESHOLD = 2; // mission deleted if this many players vote bad
 
-const APP_VERSION = "1.1.1";
+const APP_VERSION = "1.1.2";
 function diffDown(d) { const i = DIFFICULTIES.indexOf(d); return i > 0 ? DIFFICULTIES[i - 1] : d; }
 
 // ─────────────────────────────────────────────────────────────
