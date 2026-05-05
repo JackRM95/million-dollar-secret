@@ -1,6 +1,6 @@
 # Million Dollar Secret
 
-A daily hidden mission game inspired by the TV show..
+A daily hidden mission game inspired by the TV show.
 
 ## URLs
 - **Live:** `https://JackRM95.github.io/million-dollar-secret/`
